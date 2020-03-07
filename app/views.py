@@ -1,6 +1,8 @@
 import os
+import base64
 
-from flask import render_template, redirect, request, url_for, flash, session
+
+from flask import render_template, redirect, request, url_for, flash, session,jsonify
 import json
 
 from flask_wtf import file
@@ -56,7 +58,7 @@ def findall(id, Name):
     for schedule in schedules:
         afilm = [schedule.film.FilmName, schedule.Room, schedule.Date, schedule.Time, schedule.ScheduleID]
         film_info.append(afilm)
-    print(film_info)
+    #print(film_info)
     return render_template('ScheduleForEach.html', title='homepage', schedules=film_info, id=id, Name=Name,
                            Film=Filmimage)
 
@@ -101,7 +103,7 @@ def upload():
 # 上架时间段
 @app.route('/upload1/<id>/<Name>', methods=['GET', 'POST'])
 def FilmScheduleArrange(id, Name):
-    films = Films.query.get(FilmID=id)
+    films = Films.query.get(id)
     form = FilmScheduleForm()
     if request.method == 'POST' and form.validate_on_submit():
         t = FilmSchedule(FID=id,
@@ -124,3 +126,33 @@ def deleteSchedul(SchedulID):
     db.session.delete(Schedule)
     db.session.commit()
     return redirect(url_for('homepage'))
+
+@app.route('/user/home')
+def user_home():
+    #放外面还是放里面呢？ 应该和性能有关。。
+    # 用于 储存搜索到的信息，用于后续转换成jason格式
+    film_info = []
+    films = Films.query.all()
+    current_dir = os.path.dirname(__file__)
+    print(current_dir)
+    for film in films:
+        genre = ''
+        for tag in film.Genre.all():
+            genre += tag.name + ' '
+        per_film={}#存放每一步信息
+        per_film["FilmName"] =film.FilmName
+        per_film["Blurb"] = film.Blurb
+        per_film["Certificate"] = film.Certificate
+        per_film["Director"] = film.Director
+        per_film["LeadActors"] = film.LeadActors
+        per_film["FilmLength"] = film.FilmLength
+        per_film["genre"] = genre
+        per_film["Ranking"] = film.Ranking
+        image = base64.b64encode(open(current_dir + '/static/' + film.image, 'rb').read())
+        image = str(image, encoding='utf-8')
+        per_film["Image"] = image
+        film_info.append(per_film)
+        #print(base64_str)
+
+
+    return jsonify({'All_info': film_info})
