@@ -21,6 +21,8 @@ app.logger.setLevel(logging.DEBUG)
 
 db = SQLAlchemy(app)  # 实例化db对象后
 
+login = LoginManager(app)
+login.login_view = 'login'
 
 
 bootstrap = Bootstrap(app)

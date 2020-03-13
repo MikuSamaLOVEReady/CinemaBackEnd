@@ -2,11 +2,11 @@ from flask_wtf import Form, FlaskForm
 from wtforms import StringField, BooleanField, TextAreaField, SelectField, IntegerField, PasswordField, SubmitField, \
     FileField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, ValidationError
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 
 from app.models import Tag
-
+from app.models import User
 
 def tag_query():
     return Tag.query
@@ -38,3 +38,25 @@ class FilmScheduleForm(Form):
     Time = StringField('Time', validators=[DataRequired()])
     Price = StringField('Price', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+
+
+class RegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    #email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different username.')#用户名是否重复
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different email address.')#邮箱是否重复

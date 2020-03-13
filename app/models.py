@@ -27,6 +27,7 @@ class FilmSchedule(db.Model):
     Time = db.Column(db.String(16))
     Price = db.Column(db.Integer)
     film = db.relationship("Films", backref="TheSchedule")
+    #Seat = db.Column(db.Integer)
 
 #多对多的额外表
 film_tag_table = db.Table('film_tag_table',
