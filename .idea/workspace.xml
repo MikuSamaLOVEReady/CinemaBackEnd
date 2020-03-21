@@ -4,12 +4,8 @@
     <list default="true" id="194e3c41-ecea-458b-8934-2ba64517c714" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.db" beforeDir="false" afterPath="$PROJECT_DIR$/app.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/ScheduleUpload.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/ScheduleUpload.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/UploadNewFilm.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/UploadNewFilm.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -173,7 +169,13 @@
       <workItem from="1583676515701" duration="572000" />
       <workItem from="1583677384534" duration="2410000" />
       <workItem from="1583681110463" duration="13512000" />
-      <workItem from="1584082670703" duration="184000" />
+      <workItem from="1584082670703" duration="8724000" />
+      <workItem from="1584273207530" duration="5167000" />
+      <workItem from="1584371443948" duration="278000" />
+      <workItem from="1584606462431" duration="512000" />
+      <workItem from="1584624486681" duration="2491000" />
+      <workItem from="1584690184172" duration="2494000" />
+      <workItem from="1584774428476" duration="5042000" />
     </task>
     <servers />
   </component>
@@ -194,7 +196,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Cinema$db_create.coverage" NAME="db_create Coverage Results" MODIFIED="1584074121703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Cinema$run.coverage" NAME="run Coverage Results" MODIFIED="1584074128545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Cinema$db_create.coverage" NAME="db_create Coverage Results" MODIFIED="1584782698948" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Cinema$run.coverage" NAME="run Coverage Results" MODIFIED="1584789058972" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

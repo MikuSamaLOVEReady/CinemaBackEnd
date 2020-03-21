@@ -60,3 +60,11 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')#邮箱是否重复
+
+
+#订单提交表单
+class OrderForm(Form):
+    CustomerID = IntegerField('CustomerID', validators=[DataRequired()])
+    SID = IntegerField('SID', validators=[DataRequired()])
+    Seat = IntegerField('Seat', validators=[DataRequired()])
+    DealTime = StringField('DealTime', validators=[DataRequired()])

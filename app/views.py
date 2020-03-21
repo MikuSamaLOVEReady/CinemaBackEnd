@@ -18,7 +18,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 from flask_login import current_user
 
-from .models import Films, FilmSchedule
+from .models import Films, FilmSchedule,Order
 from .forms import UploadForm, SearchForm, TimeForm, FilmScheduleForm,RegistrationForm,LoginForm
 
 
@@ -81,8 +81,6 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
-
 
 @app.route('/search_schedule', methods=['GET', 'POST'])
 def search_schedule():
@@ -224,7 +222,7 @@ def user_schedule():
         per_film["Date"] = schedule.Date
         per_film["Time"] = schedule.Time
         per_film["Price"] = schedule.Price
-        per_film["Booked_seats"] = schedule.Seat
+        #per_film["Booked_seats"] = schedule.Seat
         schedul_info.append(per_film)
 
     return jsonify({'all_schedul_info': schedul_info})
@@ -236,11 +234,14 @@ def reg():
     # form  = RegistrationForm()
     regist_user = User.query.filter_by(username=request.form['username']).all()
     if regist_user.__len__() is not 0:
+        print("afaasfsa")
         return '1'
+    print("stop")
     new_user = User(username=request.form['username'], password=request.form['password'])
     db.session.add(new_user)
     db.session.commit()
     return '0'
+
 
 #安卓端登陆 响应
 @app.route('/app/user',methods=['POST'])
@@ -249,13 +250,14 @@ def check_user():
     if haveregisted.__len__() is not 0: # 判断是否已被注册
         passwordRight = User.query.filter_by(username=request.form['username'],password=request.form['password']).all()
         if passwordRight.__len__() is not 0:
-            return '登录成功'
+            #我裂开了傻逼玩意 不能返回int？
+            return str(passwordRight[0].UserID)+'.'+passwordRight[0].password_pay
         else:
             #密码错误
-            return '1'
+            return 'M'
     else:
         #没有账号
-        return '0'
+        return 'N'
 
 
 
@@ -265,19 +267,76 @@ def check_user():
     #if regist_user.__len__() is not 0:
      #   return  '1'
 
-#安卓端 获取某一场电影
+#安卓端 获取某一场电影 的所有订单中的座位ID
+#前端传回 schedule ID
+@app.route('/Get_sold',methods=['GET','POST'])
+def Get_sold():
+    scheduleID = request.form['schedulID']
+    all_orders = Order.query.filter_by(SID=scheduleID).all()
+    All_seatsID = ''
+    for order in all_orders:
+        seatid = order.Seat
+        All_seatsID = All_seatsID+str(seatid)+' '
+    return All_seatsID
 
 
-'''
-@app.route('/app/register',methods=['POST'] )
-def register_app():
-    #form  = RegistrationForm()
-    print("dfafasfasddsfafsda")
-    regist_user = User.query.filter_by(username=request.form['username']).all()
-    if regist_user.__len__() is not 0:
-        return  '1'
-    new_user = User(username=request.form['username'],password=request.form['password'])
-    db.session.add(new_user)
+
+#上传 订单 到数据库中 #Java 前端需要传回的有 1.用户ID 2.schedule ID 3.当前时间
+#当然 应该在 app中记录一下一共几个订单
+#我是打算一个座位生成一个订单？---->每个座位一个订单（当然这只是对数据库来说）
+#不行，那用户则呢么查看自己的订单呢？--->可以之后在flask 里做手脚
+#基本上完成
+@app.route('/order_upload',methods=['POST'])
+def upload_order():
+    new_order = Order(CustomerID=request.form['UserID'],
+                      SID=request.form['schedulID'],
+                      Seat=request.form['SeatID'],
+                      DealTime=request.form['CurrentTime']
+                      )
+    db.session.add(new_order)
     db.session.commit()
-    return '0'
+    return 'S'
+
+
+
+#用户查询自己的所有订单
+@app.route('/check_orders',methods=['GET','POST'])
+def check_order():
+    UID = request.form['UserID']
+    all_own_order =  Order.query.filter_by(CustomerID=UID).all()
+    #这个订单该怎么返回呢？ json？嗯 应该可以
+    order_info = []
+    for order in all_own_order:
+        per_order = {}  # 存放每一步信息
+        per_order["OrderID"] = order.OrderID
+        per_order["ScheduleID"] = order.SID
+        per_order["Room"] = FilmSchedule.query.filter_by(ScheduleID=order.SID).first().Room
+        per_order["StartTime"] = FilmSchedule.query.filter_by(ScheduleID=order.SID).first().Time
+        per_order["date"] = FilmSchedule.query.filter_by(ScheduleID=order.SID).first().Date
+        per_order["SeatID"] = order.Seat#这个座位ID 有问题 mmp不能这样弄
+        per_order["CurrentTime"] = order.DealTime
+        order_info.append(per_order)
+
+    return jsonify({'own_order_info': order_info})
+
+
+    return '1'
+
+#3-19
+#每个订单的详细信息
+#简单的 获取相应的 订单ID 即可——>根据数据库 直接找 同一个时间交易的 所有订单合理吗？
+#处理座位 将其转换回 排和行？
+#return row * this.column + (column + 1);
+# 我们的是 10X15 的影院
+#没必要！ 草 我可以直接在activity里面传递
 '''
+@app.route('/specific_order',methods=['GET','POST'])
+def order_detail():
+    SeatID = request.form['SeatID']
+    #反向解析ID
+    for row in range(9):
+        for column in range(14):
+    return "N";
+'''
+
+

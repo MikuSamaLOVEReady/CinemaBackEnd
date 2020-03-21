@@ -4,9 +4,17 @@ from app import db
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    UserID = db.Column(db.Integer, primary_key=True)
+    UserID = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password = db.Column(db.String(64), index=True)
+    #3-21加入支付密码
+    password_pay = db.Column(db.String(64), index=True)
+
+class CreditCard(db.Model):
+    __tablename__ = 'UserCards'
+    CardID  = db.Column(db.Integer, primary_key=True)
+    OwnerID = db.Column(db.Integer,db.ForeignKey('users.UserID'),index=True)
+    CardPassword = db.Column(db.String(64), index=True)
 
 
 class Order(db.Model):
